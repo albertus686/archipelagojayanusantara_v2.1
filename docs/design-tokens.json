@@ -1,0 +1,146 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "project": {
+    "name": "PT Archipelago Jaya Nusantara",
+    "version": "1.0.0",
+    "style": "Hybrid Premium B2B (Modern Minimalism + E-commerce + Luxury)"
+  },
+  "color": {
+    "primary": {
+      "50": { "value": "#F5F3F0", "type": "color" },
+      "100": { "value": "#E8E4DD", "type": "color" },
+      "500": { "value": "#8B7355", "type": "color" },
+      "600": { "value": "#6B5640", "type": "color" },
+      "900": { "value": "#3D2F1F", "type": "color" }
+    },
+    "neutral": {
+      "50": { "value": "#FAFAF8", "type": "color", "description": "Page background (warm white)" },
+      "100": { "value": "#F5F4F0", "type": "color", "description": "Surface, card backgrounds" },
+      "200": { "value": "#E8E6E0", "type": "color", "description": "Borders, dividers" },
+      "400": { "value": "#B8B6B0", "type": "color", "description": "Disabled elements" },
+      "600": { "value": "#6B6A65", "type": "color", "description": "Secondary text" },
+      "800": { "value": "#3A3935", "type": "color", "description": "Body text" },
+      "900": { "value": "#1C1C19", "type": "color", "description": "Headlines" }
+    },
+    "cta": {
+      "primary": { "value": "#000000", "type": "color", "description": "Pure black CTA (21:1 contrast)" },
+      "hover": { "value": "#1A1A1A", "type": "color", "description": "CTA hover state" },
+      "text": { "value": "#FFFFFF", "type": "color", "description": "CTA button text" }
+    },
+    "semantic": {
+      "success": { "value": "#10B981", "type": "color" },
+      "warning": { "value": "#F59E0B", "type": "color" },
+      "error": { "value": "#DC2626", "type": "color" },
+      "info": { "value": "#3B82F6", "type": "color" }
+    },
+    "background": {
+      "page": { "value": "#FAFAF8", "type": "color" },
+      "surface": { "value": "#F5F4F0", "type": "color" },
+      "elevated": { "value": "#FFFFFF", "type": "color" }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "heading": {
+        "value": "'Playfair Display', Georgia, serif",
+        "type": "fontFamily"
+      },
+      "body": {
+        "value": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "type": "fontFamily"
+      }
+    },
+    "fontSize": {
+      "display": { "value": "72px", "type": "dimension" },
+      "h1": { "value": "56px", "type": "dimension" },
+      "h2": { "value": "40px", "type": "dimension" },
+      "h3": { "value": "32px", "type": "dimension" },
+      "h4": { "value": "24px", "type": "dimension" },
+      "bodyLg": { "value": "20px", "type": "dimension" },
+      "body": { "value": "16px", "type": "dimension" },
+      "small": { "value": "14px", "type": "dimension" },
+      "caption": { "value": "12px", "type": "dimension" }
+    },
+    "fontWeight": {
+      "regular": { "value": 400, "type": "number" },
+      "medium": { "value": 500, "type": "number" },
+      "semibold": { "value": 600, "type": "number" },
+      "bold": { "value": 700, "type": "number" }
+    },
+    "lineHeight": {
+      "tight": { "value": 1.1, "type": "number" },
+      "snug": { "value": 1.25, "type": "number" },
+      "normal": { "value": 1.5, "type": "number" },
+      "relaxed": { "value": 1.6, "type": "number" }
+    },
+    "letterSpacing": {
+      "tight": { "value": "-0.01em", "type": "dimension" },
+      "normal": { "value": "0", "type": "dimension" },
+      "wide": { "value": "0.02em", "type": "dimension" },
+      "wider": { "value": "0.05em", "type": "dimension" }
+    }
+  },
+  "spacing": {
+    "1": { "value": "8px", "type": "dimension" },
+    "2": { "value": "16px", "type": "dimension" },
+    "3": { "value": "24px", "type": "dimension" },
+    "4": { "value": "32px", "type": "dimension" },
+    "6": { "value": "48px", "type": "dimension" },
+    "8": { "value": "64px", "type": "dimension" },
+    "12": { "value": "96px", "type": "dimension" },
+    "16": { "value": "128px", "type": "dimension" }
+  },
+  "borderRadius": {
+    "sm": { "value": "8px", "type": "dimension" },
+    "md": { "value": "12px", "type": "dimension" },
+    "lg": { "value": "16px", "type": "dimension" },
+    "full": { "value": "9999px", "type": "dimension" }
+  },
+  "boxShadow": {
+    "card": {
+      "value": "0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06)",
+      "type": "shadow"
+    },
+    "cardHover": {
+      "value": "0 8px 16px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08)",
+      "type": "shadow"
+    },
+    "modal": {
+      "value": "0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1)",
+      "type": "shadow"
+    },
+    "nav": {
+      "value": "0 2px 8px rgba(0, 0, 0, 0.06)",
+      "type": "shadow"
+    }
+  },
+  "animation": {
+    "duration": {
+      "fast": { "value": "200ms", "type": "duration" },
+      "normal": { "value": "300ms", "type": "duration" },
+      "slow": { "value": "400ms", "type": "duration" }
+    },
+    "easing": {
+      "standard": { "value": "ease-out", "type": "cubicBezier" },
+      "emphasized": { "value": "cubic-bezier(0.4, 0.0, 0.2, 1)", "type": "cubicBezier" }
+    }
+  },
+  "breakpoint": {
+    "sm": { "value": "640px", "type": "dimension" },
+    "md": { "value": "768px", "type": "dimension" },
+    "lg": { "value": "1024px", "type": "dimension" },
+    "xl": { "value": "1280px", "type": "dimension" },
+    "2xl": { "value": "1536px", "type": "dimension" }
+  },
+  "container": {
+    "maxWidth": {
+      "xl": { "value": "1200px", "type": "dimension" },
+      "2xl": { "value": "1400px", "type": "dimension" }
+    },
+    "gutter": {
+      "desktop": { "value": "32px", "type": "dimension" },
+      "tablet": { "value": "24px", "type": "dimension" },
+      "mobile": { "value": "16px", "type": "dimension" }
+    }
+  }
+}

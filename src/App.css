@@ -1,0 +1,31 @@
+/* GLOBAL STYLES */
+/* Kita reset semuanya biar ngikutin settingan Tailwind Modern yang baru */
+
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hapus scrollbar default biar rapi */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8C6239; /* Warna Kopi */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #704E2E;
+}
+
+/* Pastikan smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
