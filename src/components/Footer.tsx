@@ -54,7 +54,7 @@ const Footer = () => {
             <div className="flex items-center gap-3">
               {/* 1. Logo Gambar */}
               <img 
-                src="../public/images/logoacpfooter.png" // Pastikan path ini benar sesuai file kamu
+                src="/images/logoacpfooter.png" // Pastikan path ini benar sesuai file kamu
                 alt="Logo AJN" 
                 className="h-20 w-auto object-contain" 
               />
