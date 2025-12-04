@@ -13,7 +13,7 @@ const ContactSection = () => {
   })
   const [submitted, setSubmitted] = useState(false)
 
-  // DATA NEGARA LENGKAP (Major Export Destinations)
+  // DATA NEGARA LENGKAP
   const countries = [
     { name: 'Indonesia', code: '+62', flag: '🇮🇩' },
     { name: 'United States', code: '+1', flag: '🇺🇸' },
@@ -68,16 +68,13 @@ const ContactSection = () => {
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
             Partner with Us
           </h2>
-          <p className="text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            Dapatkan penawaran harga FOB/CIF khusus untuk <strong>Sumatra Mandeling Grade 1</strong>. 
-            Hubungi tim ekspor kami sekarang.
-          </p>
+          <p className="text-lg text-neutral-600 max-w-5xl mx-auto leading-relaxed">
+            Dapatkan penawaran harga FOB/CIF khusus untuk <strong>Sumatra Mandeling Grade 1</strong>. </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="bg-primary-50 rounded-2xl p-6 md:p-10 border border-primary-100 shadow-xl relative overflow-hidden">
             
-            {/* Hiasan Background Tipis */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-amber-100 rounded-full blur-3xl opacity-50 -mr-10 -mt-10"></div>
 
             <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
@@ -86,7 +83,7 @@ const ContactSection = () => {
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-xs font-bold text-neutral-700 mb-1 flex items-center gap-1">
-                    <User size={14} className="text-amber-600"/> Nama Lengkap <span className="text-red-500">*</span>
+                    <User size={16} className="text-amber-600"/><p className="text-[14px]"> Full Name <span className="text-red-500">*</span></p>
                   </label>
                   <input
                     type="text"
@@ -100,7 +97,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-neutral-700 mb-1 flex items-center gap-1">
-                    <Mail size={14} className="text-amber-600"/> Email Bisnis <span className="text-red-500">*</span>
+                    <Mail size={16} className="text-amber-600"/><p className="text-[14px]"> Business Email <span className="text-red-500">*</span> </p>
                   </label>
                   <input
                     type="email"
@@ -114,20 +111,25 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              {/* Baris 2: Telepon dengan Dropdown Negara */}
+              {/* Baris 2: Telepon & Nama Perusahaan */}
               <div className="grid md:grid-cols-2 gap-5">
+                
+                {/* KOLOM TELEPON YANG DIRAPIKAN */}
                 <div>
                   <label className="block text-xs font-bold text-neutral-700 mb-1 flex items-center gap-1">
-                    <Phone size={14} className="text-amber-600"/> WhatsApp / Telp <span className="text-red-500">*</span>
+                    <Phone size={16} className="text-amber-600"/><p className="text-[14px]"> WhatsApp/Phone <span className="text-red-500">*</span></p>
                   </label>
-                  <div className="flex">
-                    {/* Dropdown Kode Negara */}
-                    <div className="relative">
+                  
+                  {/* WRAPPER MENYATU (Border di luar) */}
+                  <div className="flex w-full border border-neutral-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-amber-500 focus-within:border-amber-500 bg-white">
+                    
+                    {/* Bagian Dropdown */}
+                    <div className="relative bg-neutral-50 border-r border-neutral-200">
                       <select
                         name="phoneCode"
                         value={formData.phoneCode}
                         onChange={handleInputChange}
-                        className="w-[110px] px-2 py-3 border border-r-0 border-neutral-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-neutral-50 text-sm appearance-none cursor-pointer"
+                        className="h-full pl-3 pr-8 py-3 bg-transparent outline-none text-sm appearance-none cursor-pointer w-[95px] font-medium text-neutral-700"
                       >
                         {countries.map((c, idx) => (
                           <option key={idx} value={c.code}>
@@ -135,16 +137,18 @@ const ContactSection = () => {
                           </option>
                         ))}
                       </select>
-                      <ChevronDown size={14} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                      {/* Icon Panah Absolute */}
+                      <ChevronDown size={16} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-neutral-500 pointer-events-none" />
                     </div>
-                    {/* Input Nomor */}
+
+                    {/* Bagian Input Nomor */}
                     <input
                       type="tel"
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
                       required
-                      className="flex-1 px-4 py-3 border border-neutral-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white text-sm"
+                      className="flex-1 px-4 py-3 outline-none text-sm text-neutral-700 placeholder-neutral-400"
                       placeholder="812-xxx-xxx"
                     />
                   </div>
@@ -152,7 +156,7 @@ const ContactSection = () => {
 
                 <div>
                   <label className="block text-xs font-bold text-neutral-700 mb-1 flex items-center gap-1">
-                    <Building2 size={14} className="text-amber-600"/> Nama Perusahaan <span className="text-red-500">*</span>
+                    <Building2 size={16} className="text-amber-600"/> <p className="text-[14px]"> Company Name<span className="text-red-500">*</span></p>
                   </label>
                   <input
                     type="text"
@@ -166,10 +170,10 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              {/* Baris 3: Dropdown Negara Tujuan (FULL LIST) */}
+              {/* Baris 3: Dropdown Negara Tujuan */}
               <div>
                 <label className="block text-xs font-bold text-neutral-700 mb-1 flex items-center gap-1">
-                  <Globe size={14} className="text-amber-600"/> Negara Tujuan Ekspor <span className="text-red-500">*</span>
+                  <Globe size={14} className="text-amber-600"/> <p className="text-[14px]"> Country Of Export Destination <span className="text-red-500">*</span></p>
                 </label>
                 <div className="relative">
                   <select
@@ -193,7 +197,7 @@ const ContactSection = () => {
               {/* Baris 4: Pesan */}
               <div>
                 <label className="block text-xs font-bold text-neutral-700 mb-1">
-                  Detail Kebutuhan (Quantity, Grade, dll) <span className="text-red-500">*</span>
+                  <p className="text-[14px]"> Detail Of Needs (Quantity, Grade, etc) <span className="text-red-500">*</span></p>
                 </label>
                 <textarea
                   name="message"
@@ -225,7 +229,7 @@ const ContactSection = () => {
                 )}
               </button>
               
-              <p className="text-center text-[10px] text-neutral-500 mt-2">
+              <p className="text-center text-[15px] text-neutral-500 mt-2">
                 *Kami merespon inquiry B2B dalam waktu kurang dari 24 jam.
               </p>
             </form>

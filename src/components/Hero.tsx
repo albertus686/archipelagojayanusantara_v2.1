@@ -63,7 +63,7 @@ const Hero = () => {
       {/* PENTING: Ganti '/images/hero-bg.png' dengan foto Biji Kopi / Kebun Kopi yang bagus */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/images/hero-bg.png" 
+          src="/images/pot-with-coffee-beans.jpg" 
           alt="Sumatra Coffee Plantation"
           className="w-full h-full object-cover opacity-50" // Opacity dikurangi biar teks terbaca
         />

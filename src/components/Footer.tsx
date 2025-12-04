@@ -17,10 +17,10 @@ const Footer = () => {
 
   // Data Social Media
   const socialLinks = [
-    { icon: <Facebook size={18} />, href: '#' },
-    { icon: <Instagram size={18} />, href: '#' },
-    { icon: <Linkedin size={18} />, href: '#' },
-    { icon: <Youtube size={18} />, href: '#' }
+    { icon: <Facebook size={18} />, href: 'https://www.facebook.com/archipelagojayanusantara' },
+    { icon: <Instagram size={18} />, href: 'https://www.instagram.com/archipelagojayanusantara/' },
+    { icon: <Linkedin size={18} />, href: 'https://www.linkedin.com/company/107803014' },
+   // { icon: <Youtube size={18} />, href: '#' }
   ]
 
   return (
@@ -28,19 +28,34 @@ const Footer = () => {
       
       <div className="container mx-auto px-6 max-w-screen-2xl">
         
-        {/* GRID 3 KOLOM */}
-        <div className="grid md:grid-cols-3 gap-10 mb-8">
+        {/* PERUBAHAN UTAMA: 
+            Saya ubah grid-cols-3 menjadi grid-cols-12 agar kita bisa atur lebar kolom lebih presisi.
+            - Kolom 1 (Brand): Ambil 5 bagian (col-span-5)
+            - Kolom 2 (Menu): Ambil 3 bagian (col-span-3)
+            - Kolom 3 (Kontak): Ambil 4 bagian (col-span-4)
+            Ini akan membuat layout lebih padat ke kiri.
+        */}
+        <div className="grid md:grid-cols-12 gap-8 mb-8">
           
-          {/* KOLOM 1: Brand & Logo */}
-          <div className="space-y-4">
+          {/* KOLOM 1: Brand (Logo + Teks) - Lebar 5/12 */}
+          <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              {/* PERUBAHAN: Ganti Kotak AJN jadi Logo Gambar yang DIKECILKAN (h-8) */}
+              {/* 1. Logo Gambar */}
               <img 
-                src="../public/images/acplogoiconheader.png" 
-                alt="PT Archipelago Jaya Nusantara" 
-                className="h-8 w-auto object-contain" // h-8 = 32px (Ukuran Manis buat Footer)
+                src="../public/images/logoacpfooter.png" // Pastikan path ini benar sesuai file kamu
+                alt="Logo AJN" 
+                className="h-20 w-auto object-contain" 
               />
-              {/* Teks Nama PT dihapus/disembunyikan kalau di logo sudah ada tulisan */}
+              
+              {/* 2. Teks Nama Perusahaan */}
+              <div>
+                <h3 className="font-heading text-base font-bold text-white tracking-wide leading-tight">
+                  PT Archipelago<br />Jaya Nusantara
+                </h3>
+                <p className="text-primary-200 text-[10px] uppercase tracking-wider mt-0.5">
+                  General Supply & Export
+                </p>
+              </div>
             </div>
             
             <p className="text-primary-100/80 text-sm leading-relaxed max-w-md">
@@ -61,8 +76,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* KOLOM 2: Menu */}
-          <div className="md:pl-10">
+          {/* KOLOM 2: Menu - Lebar 3/12 */}
+          <div className="md:col-span-3 md:pl-4">
             <h4 className="font-bold text-white text-sm mb-4 border-b border-white/20 pb-2 inline-block">
               Akses Cepat
             </h4>
@@ -72,16 +87,20 @@ const Footer = () => {
                   Beranda
                 </button>
               </li>
-              <li>
-                <button onClick={() => scrollToSection('#products')} className="hover:text-amber-500 transition-colors text-left">
-                  Produk Kami
-                </button>
-              </li>
+
               <li>
                 <button onClick={() => scrollToSection('#about')} className="hover:text-amber-500 transition-colors text-left">
                   Tentang Kami
                 </button>
               </li>
+
+              <li>
+                <button onClick={() => scrollToSection('#products')} className="hover:text-amber-500 transition-colors text-left">
+                  Produk Kami
+                </button>
+              </li>
+
+
               <li>
                 <button onClick={() => scrollToSection('#contact')} className="hover:text-amber-500 transition-colors text-left">
                   Hubungi Kami
@@ -90,23 +109,27 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* KOLOM 3: Kontak */}
-          <div>
+          {/* KOLOM 3: Kontak - Lebar 4/12 */}
+          <div className="md:col-span-4">
             <h4 className="font-bold text-white text-sm mb-4 border-b border-white/20 pb-2 inline-block">
               Kantor Pusat
             </h4>
             <ul className="space-y-3 text-sm text-primary-100/80">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-amber-500 flex-shrink-0 mt-1" />
-                <span>Jl. Kaliurang KM 5.2, Yogyakarta,<br />Indonesia 55281</span>
+                <span>
+                      JL. MAMPANG PRAPATAN RAYA NO.73A LANTAI 3 RT. 000
+                      RW. 000, TEGAL PARANG, MAMPANG PRAPATAN, KOTA ADM.
+                      JAKARTA SELATAN, DKI JAKARTA
+                </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-amber-500 flex-shrink-0" />
-                <span>+62 274 558 888</span>
+                <span>+62 8570 0800 872</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-amber-500 flex-shrink-0" />
-                <span>sales@archipelago-jaya.com</span>
+                <span>archipelagojayanusantara@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -119,14 +142,6 @@ const Footer = () => {
           </div>
           
           <div className="flex items-center gap-6">
-            <button onClick={() => scrollToSection('#about')} className="hover:text-white transition-colors">
-              Privacy Policy
-            </button>
-            <button onClick={() => scrollToSection('#about')} className="hover:text-white transition-colors">
-              Terms of Service
-            </button>
-            
-            {/* Tombol Back to Top */}
             <button
               onClick={scrollToTop}
               className="w-8 h-8 bg-amber-600 rounded flex items-center justify-center text-white hover:bg-amber-700 transition-colors shadow-lg"
