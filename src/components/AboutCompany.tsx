@@ -173,7 +173,7 @@ const AboutCompany = () => {
                 className="relative w-auto rounded-[2rem] shadow-2xl bg-black/40 overflow-hidden aspect-[5/4]"
               >
                  <img 
-                  src="../public/images/imagesabout.jpg" 
+                  src="/images/imagesabout.jpg" 
                   alt="Coffee Process"
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
                 />
