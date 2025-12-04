@@ -1,129 +1,326 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Target, Eye, Sprout, Trees, Factory, Flame, Truck } from 'lucide-react'
-import { motion } from 'framer-motion' // Import Animasi
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 const AboutCompany = () => {
+  const containerRef = useRef(null)
+  
+  // PARALLAX EFFECT SETUP
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+  
+  const yBg1 = useTransform(scrollYProgress, [0, 1], [0, -100])
+  const yBg2 = useTransform(scrollYProgress, [0, 1], [0, 100])
+
   // DATA: 5 PHILOSOPHY STEPS
   const steps = [
-    { icon: <Sprout size={28} />, hashtag: '#wegrow', title: 'Naturally Grown', desc: 'Cultivated in natural, eco-friendly, and shaded plantations without the use of harmful chemicals.' },
-    { icon: <Trees size={28} />, hashtag: '#wefarm', title: 'Farmers Dedication', desc: 'The love and dedication of farming families committed to every activity and harvest tradition.' },
-    { icon: <Factory size={28} />, hashtag: '#weprocess', title: 'Quality Control', desc: 'Owning our own processing facilities allows us full control and traceability over our coffee quality.' },
-    { icon: <Flame size={28} />, hashtag: '#weroast', title: 'Precision Processing', desc: 'Processed with modern machinery and strict profiling systems to ensure consistent flavor notes.' },
-    { icon: <Truck size={28} />, hashtag: '#wedeliver', title: 'Direct Trade', desc: 'Delivered directly from the plantation to your warehouse/cup, with absolutely no intermediaries.' }
+    {
+      icon: <Sprout size={26} />,
+      hashtag: 'We Grow',
+      title: 'Naturally Grown',
+      desc: 'Cultivated in eco-friendly shaded plantations, free from harmful chemicals.'
+    },
+    {
+      icon: <Trees size={26} />,
+      hashtag: 'We Farm',
+      title: 'Farmers Dedication',
+      desc: 'Nurtured by committed farming families upholding harvest traditions.'
+    },
+    {
+      icon: <Factory size={26} />,
+      hashtag: 'We Process',
+      title: 'Quality Control',
+      desc: 'Full traceability and control in our own dedicated processing facilities.'
+    },
+    {
+      icon: <Flame size={26} />,
+      hashtag: 'We Roast',
+      title: 'Precision Profiling',
+      desc: 'Processed with modern machinery and strict data-driven profiling.'
+    },
+    {
+      icon: <Truck size={26} />,
+      hashtag: 'We Deliver',
+      title: 'Direct Trade',
+      desc: 'Shipped directly from origin to your warehouse, eliminating intermediaries.'
+    }
   ]
 
-  // Settingan Animasi
-  const containerVariants = {
+  // --- DEFINISI SEMUA ANIMASI ---
+
+  // 1. Animasi Masuk (Fade In Up)
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  }
+
+  // 2. Animasi Parent Stagger (Supaya muncul satu per satu)
+  const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 } // Jeda 0.2 detik antar elemen (Efek Gelombang)
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
     }
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, y: 0, 
-      transition: { duration: 0.6, ease: "easeOut" }
+  // 3. Animasi KOTAK BOUNCE (Ini yang dikembalikan)
+  const cardBounceVariant = {
+    rest: { y: 0, scale: 1 },
+    hover: { 
+      y: -10, 
+      scale: 1.02,
+      transition: { 
+        type: "spring", 
+        stiffness: 300, 
+        damping: 15 
+      }
+    }
+  }
+
+  // 4. Animasi OMBAK (Ripple) pada Icon
+  const rippleVariants = {
+    rest: { scale: 0.8, opacity: 0 },
+    hover: { 
+      scale: [1, 1.5, 2], 
+      opacity: [0.6, 0.3, 0], 
+      transition: { 
+        duration: 1.2, 
+        repeat: Infinity, 
+        ease: "easeOut" 
+      } 
+    }
+  }
+
+  // 5. Animasi GOYANG (Wiggle) pada Icon
+  const iconShakeVariants = {
+    rest: { rotate: 0 },
+    hover: { 
+      rotate: [0, -10, 10, -5, 5, 0], 
+      transition: { 
+        duration: 2, 
+        repeat: Infinity, 
+        repeatType: "reverse",
+        ease: "easeInOut" 
+      } 
     }
   }
 
   return (
-    <section id="about" className="py-12 md:py-20 bg-primary-900 text-white relative overflow-hidden">
+    <section ref={containerRef} id="about" className="py-16 md:py-24 bg-primary-900 text-white relative overflow-hidden">
       
-      {/* Background Texture */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none bg-[radial-gradient(white_1px,transparent_1px)] [background-size:20px_20px]"></div>
+      {/* --- BACKGROUND DECOR --- */}
+      <motion.div style={{ y: yBg1 }} className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-amber-600 rounded-full blur-[120px] opacity-20 pointer-events-none" />
+      <motion.div style={{ y: yBg2 }} className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-amber-600 rounded-full blur-[120px] opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('/images/hero-bg.png')] bg-cover opacity-5 mix-blend-overlay pointer-events-none" />
 
       <div className="container mx-auto px-4 max-w-screen-2xl relative z-10">
         
-        {/* === HEADER (Animasi Sendiri) === */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
-          <span className="text-amber-500 font-bold tracking-widest text-xs uppercase mb-2 block">About Us</span>
-          <h2 className="font-heading text-3xl md:text-5xl font-bold text-white mb-6">
-            Bridging Indonesian <span className="text-amber-500">Coffee</span> to the World
-          </h2>
-          <p className="text-lg text-primary-200/80 max-w-3xl mx-auto leading-relaxed">
-            PT Archipelago Jaya Nusantara is dedicated to curating the finest Arabica Green Beans 
-            from Sumatra for Roasters and Importers worldwide.
-          </p>
-        </motion.div>
+        {/* === HEADER === */}
+        <div className="text-center mb-16">
+          <motion.span 
+            initial={{ opacity: 0, letterSpacing: "0.5em" }}
+            whileInView={{ opacity: 1, letterSpacing: "0.2em" }}
+            viewport={{ once: true }}
+            className="text-amber-500 font-bold text-xs uppercase mb-3 block"
+          >
+            About Us
+          </motion.span>
+          
+          <motion.h2 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="font-heading text-4xl md:text-5xl font-bold text-white mb-6"
+          >
+            {["Bridging", "Indonesian", "Coffee", "to", "the", "World"].map((word, i) => (
+              <motion.span key={i} variants={fadeInUp} className={`inline-block mr-2 ${word === "Coffee" ? "text-amber-500" : ""}`}>
+                {word}
+              </motion.span>
+            ))}
+          </motion.h2>
 
-        {/* === CONTENT (Gambar & Visi Misi) === */}
-        <div className="max-w-6xl mx-auto mb-20">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
+          <motion.p 
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-primary-100/80 text-lg max-w-3xl mx-auto leading-relaxed"
+          >
+            PT Archipelago Jaya Nusantara curates the finest, traceable Arabica Green Beans from Sumatra for Roasters and Importers worldwide.
+          </motion.p>
+        </div>
+
+        {/* === CONTENT: IMAGE & VISI MISI === */}
+        <div className="max-w-6xl mx-auto mb-24">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             
-            {/* Foto (Muncul dari Kiri) */}
+            {/* FOTO (Kiri) - Floating Animation */}
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.8 }}
               className="order-2 lg:order-1 relative group"
             >
-              <div className="absolute -inset-2 bg-amber-600/30 rounded-2xl transform rotate-2 group-hover:rotate-1 transition-all duration-500 blur-sm"></div>
-              <img src="/images/about-coffee.png" alt="Coffee Process" className="relative w-full rounded-2xl shadow-2xl border border-white/10" />
+              <div className="absolute -inset-3 border-2 border-amber-500/20 rounded-[2rem] transform rotate-2 group-hover:rotate-0 transition-all duration-700"></div>
+              
+              <motion.div 
+                animate={{ y: [0, -15, 0] }}
+                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                className="relative w-auto rounded-[2rem] shadow-2xl bg-black/40 overflow-hidden aspect-[5/4]"
+              >
+                 <img 
+                  src="../public/images/imagesabout.jpg" 
+                  alt="Coffee Process"
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
+                />
+                 <div className="absolute inset-0 bg-gradient-to-t from-primary-900/90 via-transparent to-transparent"></div>
+              </motion.div>
             </motion.div>
 
-            {/* Cards Visi Misi (Muncul dari Kanan - Satu per satu) */}
+            {/* Visi Misi (Kanan) */}
             <motion.div 
+              variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              variants={containerVariants}
-              className="order-1 lg:order-2 space-y-6"
+              className="order-1 lg:order-2 flex flex-col gap-6"
             >
-              <motion.div variants={itemVariants} className="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-amber-500/50 transition-colors">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-12 h-12 bg-amber-900/50 rounded-full flex items-center justify-center text-amber-500 border border-amber-500/20"><Target size={24} /></div>
-                  <h3 className="font-heading text-xl font-bold text-white">Our Mission</h3>
-                </div>
-                <p className="text-primary-200/80 leading-relaxed text-sm">"To introduce the unique character of Sumatra Mandeling coffee to the global stage."</p>
+              
+              {/* 1. VISION CARD */}
+              <motion.div 
+                variants={fadeInUp} 
+                // Mengaktifkan hover di parent agar semua child bereaksi
+                whileHover="hover" 
+                initial="rest" 
+                animate="rest"
+              >
+                <motion.div 
+                  variants={cardBounceVariant} // KOTAK BOUNCE
+                  className="bg-white/5 border border-white/10 p-8 rounded-2xl cursor-default relative overflow-hidden group hover:border-amber-500/30 transition-colors duration-300"
+                >
+                  <div className="flex items-start gap-6 relative z-10">
+                    {/* ICON CONTAINER */}
+                    <div className="relative shrink-0 w-14 h-14 flex items-center justify-center">
+                       {/* Ripple / Ombak */}
+                       <motion.div 
+                          variants={rippleVariants}
+                          className="absolute inset-0 rounded-full bg-amber-500/40"
+                       />
+                       <div className="absolute inset-0 rounded-full bg-amber-500/10 border border-amber-500/20"></div>
+                       {/* Icon Utama */}
+                       <motion.div variants={iconShakeVariants} className="text-amber-500 relative z-10">
+                          <Eye size={28} />
+                       </motion.div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-heading text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">Our Vision</h3>
+                      <p className="text-primary-100/70 leading-relaxed italic">
+                        "To introduce premium Nusantara coffee to the Taiwanese market via international standards, modern branding, and enduring partnerships with local distributors, roasters, and cafe chains."
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-amber-500/50 transition-colors">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-12 h-12 bg-amber-900/50 rounded-full flex items-center justify-center text-amber-500 border border-amber-500/20"><Eye size={24} /></div>
-                  <h3 className="font-heading text-xl font-bold text-white">Our Vision</h3>
-                </div>
-                <p className="text-primary-200/80 leading-relaxed text-sm">"To become the most trusted sourcing partner for international roasters."</p>
+              {/* 2. MISSION CARD */}
+              <motion.div 
+                variants={fadeInUp} 
+                whileHover="hover" 
+                initial="rest" 
+                animate="rest"
+              >
+                <motion.div 
+                  variants={cardBounceVariant} // KOTAK BOUNCE
+                  className="bg-white/5 border border-white/10 p-8 rounded-2xl cursor-default relative overflow-hidden group hover:border-amber-500/30 transition-colors duration-300"
+                >
+                  <div className="flex items-start gap-6 relative z-10">
+                    <div className="relative shrink-0 w-14 h-14 flex items-center justify-center">
+                       {/* Ripple */}
+                       <motion.div 
+                          variants={rippleVariants}
+                          className="absolute inset-0 rounded-full bg-amber-500/40"
+                       />
+                       <div className="absolute inset-0 rounded-full bg-amber-500/10 border border-amber-500/20"></div>
+                       {/* Icon */}
+                       <motion.div variants={iconShakeVariants} className="text-amber-500 relative z-10">
+                          <Target size={28} />
+                       </motion.div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-heading text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">Our Mission</h3>
+                      <p className="text-primary-100/70 leading-relaxed italic">
+                        "Our mission is to establish Nusantara coffee as a premium choice in Taiwan by guaranteeing international quality standards, implementing modern branding strategies, and fostering long-term synergies with local distributors and roasters."
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
               </motion.div>
+
             </motion.div>
           </div>
         </div>
 
-        {/* === BOTTOM: 5 KOTAK FILOSOFI (Muncul Bergelombang) === */}
+        {/* === BOTTOM: 5 KOTAK FILOSOFI === */}
         <motion.div 
+          variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }} // Mulai animasi pas udah kelihatan dikit
-          variants={containerVariants} // Pemicu animasi bergelombang
-          className="pt-12 border-t border-white/10"
+          viewport={{ once: true }}
+          className="relative pt-10 border-t border-white/10"
         >
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h3 className="font-heading text-2xl font-bold text-white">Our Farm to Cup Philosophy</h3>
-            <p className="text-primary-300 text-sm mt-2">Commitment to quality at every step</p>
-          </motion.div>
+          <div className="text-center mb-10">
+            <h3 className="font-heading text-2xl font-bold text-white">
+              The Farm to Cup Philosophy
+            </h3>
+            <p className="text-primary-200/60 mt-2 text-sm">Our holistic approach to guaranteed quality</p>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {steps.map((step, index) => (
               <motion.div 
                 key={index} 
-                variants={itemVariants} // Setiap kartu akan muncul berurutan
-                className="bg-white/5 p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center group hover:-translate-y-2 hover:bg-white/10 transition-all duration-300"
+                variants={fadeInUp}
+                whileHover="hover" 
+                initial="rest"
+                animate="rest"
               >
-                <div className="w-16 h-16 rounded-full bg-amber-900/30 text-amber-500 flex items-center justify-center mb-4 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300 border border-amber-500/20">
-                  {step.icon}
-                </div>
-                <h4 className="text-lg font-bold text-sky-400 mb-2 font-heading tracking-wide group-hover:text-sky-300">{step.hashtag}</h4>
-                <h5 className="font-bold text-white text-sm mb-3">{step.title}</h5>
-                <p className="text-xs text-primary-200/70 leading-relaxed">{step.desc}</p>
+                 {/* KOTAK BOUNCE */}
+                 <motion.div
+                    variants={cardBounceVariant}
+                    className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col items-center text-center hover:bg-white/10 hover:border-amber-500/50 transition-colors duration-300 group cursor-pointer h-full"
+                 >
+                    {/* ICON CONTAINER */}
+                    <div className="relative w-16 h-16 mb-4 flex items-center justify-center">
+                       {/* Ripple */}
+                       <motion.div 
+                          variants={rippleVariants}
+                          className="absolute inset-0 rounded-full bg-amber-500/30"
+                       />
+                       {/* Base Circle */}
+                       <div className="absolute inset-0 rounded-full bg-amber-500/10 border border-amber-500/20 group-hover:border-amber-500 transition-colors"></div>
+                       
+                       {/* Icon */}
+                       <motion.div variants={iconShakeVariants} className="text-amber-500 relative z-10">
+                          {step.icon}
+                       </motion.div>
+                    </div>
+                    
+                    <h4 className="text-xs font-bold uppercase tracking-wider mb-2 text-amber-500/80 group-hover:text-amber-400 transition-colors">
+                      #{step.hashtag}
+                    </h4>
+                    <h5 className="font-bold text-white text-base mb-2">
+                      {step.title}
+                    </h5>
+                    <p className="text-xs text-primary-200/70 leading-relaxed group-hover:text-white transition-colors">
+                      {step.desc}
+                    </p>
+                 </motion.div>
               </motion.div>
             ))}
           </div>
