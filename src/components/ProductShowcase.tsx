@@ -1,5 +1,6 @@
 import React from 'react'
-import { Shield, Award, CheckCircle, Star, Coffee, Mountain, Droplets, Sun } from 'lucide-react'
+import { Star, Coffee, Mountain, Droplets, ArrowRight, ShieldCheck } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 const ProductShowcase = () => {
   const scrollToSection = (href: string) => {
@@ -9,86 +10,113 @@ const ProductShowcase = () => {
     }
   }
 
+  const specs = [
+    { label: 'Altitude', value: '1,400 masl', icon: <Mountain size={20} /> },
+    { label: 'Process', value: 'Giling Basah', icon: <Coffee size={20} /> },
+    { label: 'Moisture', value: '12-13%', icon: <Droplets size={20} /> },
+    { label: 'Grade', value: 'Grade 1 (Triple Picked)', icon: <Star size={20} /> },
+  ]
+
+  // Varian Animasi
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  }
+  
+  const itemVariants = {
+    hidden: { opacity: 0, x: 30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+  }
+
   return (
-    // PERUBAHAN: Padding dikurangi jadi py-10 md:py-12
-    <section id="products" className="py-10 md:py-12 bg-primary-50">
-      <div className="container mx-auto px-4">
+    <section id="products" className="py-16 md:py-24 bg-primary-900 relative overflow-hidden text-white">
+      
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-[url('/images/hero-bg.png')] bg-cover opacity-10 mix-blend-overlay"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-600 rounded-full blur-[100px] opacity-20"></div>
+
+      <div className="container mx-auto px-4 max-w-screen-2xl relative z-10">
         
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 bg-primary-100 text-primary-800 px-3 py-1 rounded-full mb-3">
-            <Coffee size={14} />
-            <span className="text-xs font-bold tracking-wide uppercase">Signature Product</span>
-          </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-            Sumatra Mandeling Grade 1
-          </h2>
-          <p className="text-lg text-neutral-600 max-w-3xl mx-auto leading-relaxed">
-            Permata dari dataran tinggi Sumatera dengan body tebal dan acidity rendah.
-          </p>
-        </div>
-
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-primary-100 flex flex-col lg:flex-row">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          
+          {/* KOLOM KIRI: FOTO (Animasi Zoom In & Fade) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative group"
+          >
+            <div className="absolute -inset-4 border-2 border-amber-500/30 rounded-full md:rounded-[3rem] transform rotate-3 group-hover:rotate-0 transition-all duration-700"></div>
             
-            <div className="lg:w-1/2 relative min-h-[300px] lg:min-h-full bg-neutral-800">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/50 aspect-square md:aspect-[4/3]">
               <img 
-                src="/images/mandeling-beans.png" 
+                src="/images/mandelin.png" 
                 alt="Sumatra Mandeling Green Beans"
-                className="absolute inset-0 w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
-                  <Star size={12} fill="currentColor" />
-                  PREMIUM
+              <div className="absolute bottom-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-xl shadow-lg">
+                <div className="flex items-center gap-2 text-amber-400 mb-1">
+                  <ShieldCheck size={20} />
+                  <span className="font-bold text-xs uppercase tracking-widest">Certified</span>
+                </div>
+                <p className="text-white font-heading text-lg">Export Quality</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* KOLOM KANAN: DETAIL (Animasi Staggered/Berurutan) */}
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <motion.div variants={itemVariants}>
+              <span className="text-amber-500 font-bold tracking-[0.2em] text-sm uppercase mb-2 block animate-pulse">
+                The Crown Jewel of Sumatra
+              </span>
+              <h2 className="font-heading text-5xl md:text-6xl font-bold text-white leading-tight mb-4">
+                Sumatra <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600">
+                  Mandeling G1
                 </span>
-              </div>
-            </div>
-
-            <div className="lg:w-1/2 p-6 md:p-10 flex flex-col justify-center">
-              <h3 className="font-heading text-2xl font-bold text-primary-900 mb-2">
-                The Jewel of Indonesia
-              </h3>
-              <p className="text-primary-600 font-medium mb-4 text-sm">Semi-Washed (Giling Basah) Process</p>
-              
-              <p className="text-neutral-600 mb-6 leading-relaxed text-sm">
-                Kopi Mandeling kami diproses secara tradisional "Giling Basah" yang memberikan warna unik hijau kebiruan. 
-                Dikenal dunia karena teksturnya yang syrupy, aroma earthy yang kuat, serta nuansa coklat dan rempah yang kompleks.
+              </h2>
+              <p className="text-primary-100/80 text-lg leading-relaxed border-l-4 border-amber-600 pl-6">
+                Kopi dengan karakter <strong>Full Body</strong> yang legendaris. 
+                Memiliki profil rasa <em>Earthy</em>, <em>Spicy</em>, dan sentuhan <em>Dark Chocolate</em>. 
+                Pilihan utama roaster dunia untuk base espresso yang solid.
               </p>
+            </motion.div>
 
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-primary-50 p-3 rounded-lg border border-primary-100">
-                  <div className="flex items-center gap-2 mb-1 text-primary-700">
-                    <Mountain size={16} />
-                    <span className="text-xs font-bold">Altitude</span>
-                  </div>
-                  <p className="font-bold text-neutral-900 text-sm">1,200 - 1,500 masl</p>
-                </div>
-                <div className="bg-primary-50 p-3 rounded-lg border border-primary-100">
-                  <div className="flex items-center gap-2 mb-1 text-primary-700">
-                    <Droplets size={16} />
-                    <span className="text-xs font-bold">Moisture</span>
-                  </div>
-                  <p className="font-bold text-neutral-900 text-sm">12 - 13% Max</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                <button 
-                  onClick={() => scrollToSection('#contact')}
-                  className="flex-1 bg-primary-600 text-white py-3 rounded-lg font-bold hover:bg-primary-700 transition-all text-sm"
+            {/* Grid Spesifikasi */}
+            <div className="grid grid-cols-2 gap-4">
+              {specs.map((spec, index) => (
+                <motion.div 
+                  key={index} 
+                  variants={itemVariants} // Muncul satu per satu
+                  className="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-amber-600/20 hover:border-amber-500/50 transition-all duration-300 group"
                 >
-                  Minta Penawaran
-                </button>
-                <button 
-                  onClick={() => scrollToSection('#contact')}
-                  className="flex-1 border-2 border-primary-200 text-primary-700 py-3 rounded-lg font-bold hover:bg-primary-50 text-sm"
-                >
-                  Download Brosur
-                </button>
-              </div>
-
+                  <div className="text-amber-500 mb-2 group-hover:scale-110 transition-transform origin-left">
+                    {spec.icon}
+                  </div>
+                  <p className="text-xs text-primary-300 uppercase tracking-wider mb-1">{spec.label}</p>
+                  <p className="text-lg font-bold text-white">{spec.value}</p>
+                </motion.div>
+              ))}
             </div>
-          </div>
+
+            <motion.div variants={itemVariants} className="pt-4">
+              <button 
+                onClick={() => scrollToSection('#contact')}
+                className="w-full sm:w-auto bg-amber-600 text-white py-4 px-10 rounded-xl font-bold text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/40 flex items-center justify-center gap-3 group"
+              >
+                Minta Sampel Gratis
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </motion.div>
+
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, Star, TrendingUp, Users, Quote, CheckCircle } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const ClientSuccessStories = () => {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [current, setCurrent] = useState(0)
+  const [direction, setDirection] = useState(0) // 1 = Kanan, -1 = Kiri
   const [autoPlay, setAutoPlay] = useState(true)
 
   const testimonials = [
@@ -38,121 +40,202 @@ const ClientSuccessStories = () => {
     }
   ]
 
+  // SETTINGAN ANIMASI TUMPUK (SLIDER)
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%', // Masuk dari luar layar
+      opacity: 0,
+      scale: 0.9,
+      zIndex: 0
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      zIndex: 1,
+      transition: { duration: 0.6, type: "spring", stiffness: 300, damping: 30 } // Efek pegas halus
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? '100%' : '-100%', // Keluar ke arah berlawanan
+      opacity: 0,
+      scale: 0.9,
+      zIndex: 0,
+      transition: { duration: 0.6 }
+    })
+  }
+
+  // Auto Play
   useEffect(() => {
     if (autoPlay) {
       const interval = setInterval(() => {
-        setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-      }, 6000)
+        setDirection(1)
+        setCurrent((prev) => (prev + 1) % testimonials.length)
+      }, 8000) // Sedikit diperlama biar nyaman baca
       return () => clearInterval(interval)
     }
   }, [autoPlay, testimonials.length])
 
-  const nextTestimonial = () => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-  const prevTestimonial = () => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  const goToTestimonial = (index: number) => setCurrentTestimonial(index)
+  // Navigasi
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection)
+    if (newDirection === 1) {
+      setCurrent((prev) => (prev + 1) % testimonials.length)
+    } else {
+      setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+    }
+  }
+
+  const goToIndex = (index: number) => {
+    setDirection(index > current ? 1 : -1)
+    setCurrent(index)
+  }
 
   return (
-    <section id="testimonials" className="py-10 md:py-16 bg-white relative">
-      <div className="container mx-auto px-4">
+    <section id="testimonials" className="py-10 md:py-16 bg-primary-900 text-white relative overflow-hidden">
+      
+      {/* Background Decor */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none bg-[radial-gradient(white_1px,transparent_1px)] [background-size:20px_20px]"></div>
+
+      <div className="container mx-auto px-4 relative z-10">
         
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-neutral-900 mb-3">
+        {/* HEADER dengan ANIMASI MASUK (Scroll Reveal) */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-10"
+        >
+          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">
             Client Success Stories
           </h2>
-          <p className="text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-primary-200 text-lg max-w-2xl mx-auto">
             Kepercayaan dari Roaster dan Importir Global adalah bukti komitmen kualitas kami.
           </p>
-        </div>
+        </motion.div>
 
-        {/* CONTAINER UTAMA (Relative agar tombol bisa ditaruh di luar) */}
-        <div className="relative max-w-5xl mx-auto">
+        {/* CONTAINER UTAMA (Fit Page) */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="max-w-screen-xl mx-auto relative px-12 md:px-20"
+        >
           
-          {/* TOMBOL KIRI (DI LUAR KOTAK) */}
+          {/* TOMBOL KIRI (Luar) */}
           <button 
-            onClick={prevTestimonial} 
-            className="hidden md:flex absolute top-1/2 -left-16 transform -translate-y-1/2 z-20 bg-white text-primary-900 border border-primary-100 p-3 rounded-full shadow-lg hover:bg-amber-600 hover:text-white hover:scale-110 transition-all duration-300"
-            aria-label="Previous"
+            onClick={() => paginate(-1)} 
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 text-white border border-white/20 p-3 rounded-full hover:bg-amber-600 hover:border-amber-600 transition-all duration-300 hidden md:flex hover:scale-110 shadow-lg backdrop-blur-sm"
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={28} />
           </button>
 
-          {/* KOTAK TESTIMONI */}
+          {/* AREA KARTU (Fixed Height biar stabil saat animasi) */}
           <div 
-            className="relative rounded-2xl shadow-2xl overflow-hidden bg-cover bg-center min-h-[400px] flex items-center transition-all duration-500 mx-auto"
-            style={{ backgroundImage: `linear-gradient(rgba(42, 29, 17, 0.9), rgba(42, 29, 17, 0.8)), url('${testimonials[currentTestimonial].image}')` }}
+            className="relative h-[500px] w-full"
             onMouseEnter={() => setAutoPlay(false)}
             onMouseLeave={() => setAutoPlay(true)}
           >
-            <div className="relative z-10 w-full p-8 md:p-12 text-white">
-              <div className="grid lg:grid-cols-2 gap-8 items-center">
+            {/* ANIMATE PRESENCE: Kunci animasi tumpuk */}
+            <AnimatePresence initial={false} custom={direction}>
+              
+              <motion.div
+                key={current}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black group"
+              >
+                {/* Background Image (Zoom saat Hover) */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url('${testimonials[current].image}')` }}
+                ></div>
                 
-                {/* Kolom Kiri: Quote & Info */}
-                <div>
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                      <Star key={i} className="text-amber-400 fill-current" size={18} />
-                    ))}
-                  </div>
-                  
-                  <Quote className="text-primary-300 mb-4 opacity-40" size={48} />
-                  
-                  <blockquote className="text-xl md:text-2xl font-light leading-relaxed mb-6 font-heading text-primary-50">
-                    "{testimonials[currentTestimonial].quote}"
-                  </blockquote>
-                  
-                  <div className="border-l-4 border-amber-500 pl-4">
-                    <p className="font-bold text-lg text-white">{testimonials[currentTestimonial].author}</p>
-                    <p className="text-amber-200/90 text-sm">{testimonials[currentTestimonial].position}</p>
-                    <p className="text-amber-200/90 text-sm font-medium">{testimonials[currentTestimonial].company}, {testimonials[currentTestimonial].location}</p>
-                  </div>
-                </div>
+                {/* Overlay Gelap */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-black/40 transition-opacity duration-500"></div>
 
-                {/* Kolom Kanan: Key Performance (Kotak Kaca) */}
-                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/10 shadow-inner">
-                  <h4 className="font-bold text-sm mb-4 text-center border-b border-white/10 pb-3 text-amber-100 tracking-wider uppercase">Key Performance</h4>
-                  <div className="space-y-3">
-                    {testimonials[currentTestimonial].results.map((result, index) => (
-                      <div key={index} className="flex items-center gap-3 p-3 bg-black/20 rounded-lg hover:bg-black/30 transition-colors">
-                        <div className="text-amber-400 bg-white/10 p-2 rounded-md">
-                          {result.icon}
+                {/* Konten Dalam Kartu */}
+                <div className="relative z-10 w-full h-full p-8 md:p-14 flex items-center">
+                  <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
+                    
+                    {/* Kiri: Teks */}
+                    <div className="transform transition-transform duration-500 group-hover:translate-x-2">
+                      <div className="flex items-center gap-1 mb-6">
+                        {[...Array(testimonials[current].rating)].map((_, i) => (
+                          <Star key={i} className="text-amber-400 fill-current" size={20} />
+                        ))}
+                      </div>
+                      
+                      <Quote className="text-amber-600 mb-6 opacity-80" size={56} />
+                      
+                      <blockquote className="text-2xl md:text-3xl font-heading font-medium leading-snug mb-8 text-primary-50">
+                        "{testimonials[current].quote}"
+                      </blockquote>
+                      
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 bg-amber-600 rounded-full flex items-center justify-center font-bold text-xl shadow-lg border-2 border-white/20">
+                          {testimonials[current].author.charAt(0)}
                         </div>
-                        <div className="flex-1">
-                          <p className="text-[10px] uppercase text-primary-200 font-bold tracking-wide">{result.label}</p>
-                          <p className="text-lg font-bold text-white">{result.value}</p>
+                        <div>
+                          <p className="font-bold text-lg text-white">{testimonials[current].author}</p>
+                          <p className="text-amber-400 text-sm">{testimonials[current].position}, {testimonials[current].company}</p>
                         </div>
                       </div>
-                    ))}
+                    </div>
+
+                    {/* Kanan: Metrics (Efek Glass + Hover Lift) */}
+                    <div className="hidden lg:block bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-inner transform transition-all duration-500 group-hover:-translate-y-2 group-hover:bg-white/10">
+                      <h4 className="font-bold text-sm mb-6 text-center text-amber-200 tracking-widest uppercase border-b border-white/10 pb-4">
+                        Performance Metrics
+                      </h4>
+                      <div className="space-y-4">
+                        {testimonials[current].results.map((result, index) => (
+                          <div key={index} className="flex items-center gap-4 p-4 bg-black/30 rounded-xl border border-white/5 hover:bg-amber-900/40 transition-colors">
+                            <div className="text-amber-400 bg-amber-900/30 p-2 rounded-lg">
+                              {result.icon}
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-xs uppercase text-primary-300 font-semibold tracking-wide mb-1">{result.label}</p>
+                              <p className="text-xl font-bold text-white">{result.value}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
                   </div>
                 </div>
+              </motion.div>
 
-              </div>
-            </div>
+            </AnimatePresence>
           </div>
 
-          {/* TOMBOL KANAN (DI LUAR KOTAK) */}
+          {/* TOMBOL KANAN (Luar) */}
           <button 
-            onClick={nextTestimonial} 
-            className="hidden md:flex absolute top-1/2 -right-16 transform -translate-y-1/2 z-20 bg-white text-primary-900 border border-primary-100 p-3 rounded-full shadow-lg hover:bg-amber-600 hover:text-white hover:scale-110 transition-all duration-300"
-            aria-label="Next"
+            onClick={() => paginate(1)} 
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 text-white border border-white/20 p-3 rounded-full hover:bg-amber-600 hover:border-amber-600 transition-all duration-300 hidden md:flex hover:scale-110 shadow-lg backdrop-blur-sm"
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={28} />
           </button>
 
-          {/* Navigasi Dots (Untuk Mobile) */}
-          <div className="flex justify-center gap-2 mt-8 md:hidden">
+          {/* Indikator Dots */}
+          <div className="flex justify-center gap-3 mt-6">
             {testimonials.map((_, index) => (
               <button
                 key={index}
-                onClick={() => goToTestimonial(index)}
+                onClick={() => goToIndex(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentTestimonial ? 'bg-amber-600 w-6' : 'bg-primary-200 hover:bg-primary-400'
+                  index === current ? 'bg-amber-500 w-8' : 'bg-white/30 hover:bg-white/50'
                 }`}
               />
             ))}
           </div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   )
