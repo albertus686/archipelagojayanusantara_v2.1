@@ -16,12 +16,24 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   // Data Social Media
-  const socialLinks = [
-    { icon: <Facebook size={18} />, href: 'https://www.facebook.com/archipelagojayanusantara' },
-    { icon: <Instagram size={18} />, href: 'https://www.instagram.com/archipelagojayanusantara/' },
-    { icon: <Linkedin size={18} />, href: 'https://www.linkedin.com/company/107803014' },
-   // { icon: <Youtube size={18} />, href: '#' }
-  ]
+ const socialLinks = [
+  { 
+    icon: <Facebook size={18} />, 
+    href: 'https://www.facebook.com/archipelagojayanusantara', 
+    target: '_blank' // Pakai huruf kecil 't'
+  },
+  { 
+    icon: <Instagram size={18} />, 
+    href: 'https://www.instagram.com/archipelagojayanusantara/', 
+    target: '_blank' 
+  },
+  { 
+    icon: <Linkedin size={18} />, 
+    href: 'https://www.linkedin.com/company/107803014', 
+    target: '_blank' 
+  },
+  // { icon: <Youtube size={18} />, href: '#' }
+]
 
   return (
     <footer className="bg-primary-900 text-white pt-10 pb-6 border-t-4 border-amber-600">
@@ -63,17 +75,26 @@ const Footer = () => {
             </p>
 
             {/* Social Links */}
-            <div className="flex gap-3 pt-2">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  className="w-8 h-8 bg-primary-800 rounded-lg flex items-center justify-center text-amber-500 hover:bg-amber-600 hover:text-white transition-colors duration-300 border border-white/5"
-                >
-                  {social.icon}
-                </a>
-              ))}
-            </div>
+            <div className="flex gap-4 mt-6"> 
+  {/* Sesuaikan className wrapper di atas dengan kode aslimu */}
+  
+          {/* SOCIAL LINKS*/}
+            {socialLinks.map((item, index) => (
+               <a
+                    key={index}
+                    href={item.href}
+                    
+                    // --- INI YANG BIKIN BUKA TAB BARU ---
+                    target={item.target || "_self"} 
+                    rel="noopener noreferrer"
+                    // ------------------------------------
+
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-amber-600 hover:text-white transition-all duration-300"
+                      >
+                    {item.icon}
+                     </a>
+                     ))}
+              </div>
           </div>
 
           {/* KOLOM 2: Menu - Lebar 3/12 */}
