@@ -48,15 +48,9 @@ const AboutCompany = () => {
     }
   ]
 
-  // --- DEFINISI SEMUA ANIMASI ---
+  // --- VARIAN ANIMASI (DIPISAH AGAR TIDAK BENTROK) ---
 
-  // 1. Animasi Masuk (Fade In Up)
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
-  }
-
-  // 2. Animasi Parent Stagger (Supaya muncul satu per satu)
+  // 1. ANIMASI MASUK (Untuk Wrapper Luar)
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
@@ -65,45 +59,41 @@ const AboutCompany = () => {
     }
   }
 
-  // 3. Animasi KOTAK BOUNCE (Ini yang dikembalikan)
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  }
+
+  // 2. ANIMASI INTERAKSI (Untuk Kartu Dalam)
   const cardBounceVariant = {
-    rest: { y: 0, scale: 1 },
+    rest: { 
+      y: 0, 
+      scale: 1,
+      // Transisi 'pulang' yang mulus biar tidak patah
+      transition: { duration: 0.5, ease: "easeOut" } 
+    },
     hover: { 
       y: -10, 
       scale: 1.02,
-      transition: { 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 15 
-      }
+      transition: { type: "spring", stiffness: 300, damping: 15 }
     }
   }
 
-  // 4. Animasi OMBAK (Ripple) pada Icon
+  // 3. Animasi ICON (Ripple & Shake)
   const rippleVariants = {
     rest: { scale: 0.8, opacity: 0 },
     hover: { 
       scale: [1, 1.5, 2], 
-      opacity: [0.6, 0.3, 0], 
-      transition: { 
-        duration: 1.2, 
-        repeat: Infinity, 
-        ease: "easeOut" 
-      } 
+      opacity: [0.5, 0.2, 0], 
+      transition: { duration: 1.5, repeat: Infinity, ease: "easeOut" } 
     }
   }
 
-  // 5. Animasi GOYANG (Wiggle) pada Icon
   const iconShakeVariants = {
     rest: { rotate: 0 },
     hover: { 
       rotate: [0, -10, 10, -5, 5, 0], 
-      transition: { 
-        duration: 2, 
-        repeat: Infinity, 
-        repeatType: "reverse",
-        ease: "easeInOut" 
-      } 
+      transition: { duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" } 
     }
   }
 
@@ -157,7 +147,7 @@ const AboutCompany = () => {
         <div className="max-w-6xl mx-auto mb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             
-            {/* FOTO (Kiri) - Floating Animation */}
+            {/* FOTO (Kiri) */}
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -190,33 +180,26 @@ const AboutCompany = () => {
               className="order-1 lg:order-2 flex flex-col gap-6"
             >
               
-              {/* 1. VISION CARD */}
+              {/* VISION CARD */}
               <motion.div 
-                variants={fadeInUp} 
-                // Mengaktifkan hover di parent agar semua child bereaksi
-                whileHover="hover" 
-                initial="rest" 
-                animate="rest"
+                variants={fadeInUp} // Animasi Masuk Wrapper
+                className="w-full"
               >
                 <motion.div 
-                  variants={cardBounceVariant} // KOTAK BOUNCE
+                  initial="rest"
+                  whileHover="hover"
+                  animate="rest"
+                  variants={cardBounceVariant} // Animasi Interaksi Kartu
                   className="bg-white/5 border border-white/10 p-8 rounded-2xl cursor-default relative overflow-hidden group hover:border-amber-500/30 transition-colors duration-300"
                 >
                   <div className="flex items-start gap-6 relative z-10">
-                    {/* ICON CONTAINER */}
                     <div className="relative shrink-0 w-14 h-14 flex items-center justify-center">
-                       {/* Ripple / Ombak */}
-                       <motion.div 
-                          variants={rippleVariants}
-                          className="absolute inset-0 rounded-full bg-amber-500/40"
-                       />
+                       <motion.div variants={rippleVariants} className="absolute inset-0 rounded-full bg-amber-500/40" />
                        <div className="absolute inset-0 rounded-full bg-amber-500/10 border border-amber-500/20"></div>
-                       {/* Icon Utama */}
                        <motion.div variants={iconShakeVariants} className="text-amber-500 relative z-10">
                           <Eye size={28} />
                        </motion.div>
                     </div>
-
                     <div>
                       <h3 className="font-heading text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">Our Vision</h3>
                       <p className="text-primary-100/70 leading-relaxed italic">
@@ -227,31 +210,26 @@ const AboutCompany = () => {
                 </motion.div>
               </motion.div>
 
-              {/* 2. MISSION CARD */}
+              {/* MISSION CARD */}
               <motion.div 
                 variants={fadeInUp} 
-                whileHover="hover" 
-                initial="rest" 
-                animate="rest"
+                className="w-full"
               >
                 <motion.div 
-                  variants={cardBounceVariant} // KOTAK BOUNCE
+                  initial="rest"
+                  whileHover="hover"
+                  animate="rest"
+                  variants={cardBounceVariant}
                   className="bg-white/5 border border-white/10 p-8 rounded-2xl cursor-default relative overflow-hidden group hover:border-amber-500/30 transition-colors duration-300"
                 >
                   <div className="flex items-start gap-6 relative z-10">
                     <div className="relative shrink-0 w-14 h-14 flex items-center justify-center">
-                       {/* Ripple */}
-                       <motion.div 
-                          variants={rippleVariants}
-                          className="absolute inset-0 rounded-full bg-amber-500/40"
-                       />
+                       <motion.div variants={rippleVariants} className="absolute inset-0 rounded-full bg-amber-500/40" />
                        <div className="absolute inset-0 rounded-full bg-amber-500/10 border border-amber-500/20"></div>
-                       {/* Icon */}
                        <motion.div variants={iconShakeVariants} className="text-amber-500 relative z-10">
                           <Target size={28} />
                        </motion.div>
                     </div>
-
                     <div>
                       <h3 className="font-heading text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">Our Mission</h3>
                       <p className="text-primary-100/70 leading-relaxed italic">
@@ -266,12 +244,12 @@ const AboutCompany = () => {
           </div>
         </div>
 
-        {/* === BOTTOM: 5 KOTAK FILOSOFI === */}
+        {/* === BOTTOM: 5 KOTAK FILOSOFI (FLEXBOX CENTERED + ANIMATION FIX) === */}
         <motion.div 
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }} // Trigger sedikit lebih cepat
           className="relative pt-10 border-t border-white/10"
         >
           <div className="text-center mb-10">
@@ -281,30 +259,27 @@ const AboutCompany = () => {
             <p className="text-primary-200/60 mt-2 text-sm">Our holistic approach to guaranteed quality</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {steps.map((step, index) => (
+              // 1. WRAPPER LUAR: Menangani Animasi Masuk (FadeIn)
               <motion.div 
                 key={index} 
-                variants={fadeInUp}
-                whileHover="hover" 
-                initial="rest"
-                animate="rest"
+                variants={fadeInUp} 
+                className="w-full md:w-[30%] lg:w-[18%]"
               >
-                 {/* KOTAK BOUNCE */}
+                 {/* 2. KOTAK DALAM: Menangani Interaksi (Hover/Bounce) secara mandiri */}
                  <motion.div
+                    initial="rest"
+                    whileHover="hover"
+                    animate="rest"
                     variants={cardBounceVariant}
                     className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col items-center text-center hover:bg-white/10 hover:border-amber-500/50 transition-colors duration-300 group cursor-pointer h-full"
                  >
-                    {/* ICON CONTAINER */}
                     <div className="relative w-16 h-16 mb-4 flex items-center justify-center">
                        {/* Ripple */}
-                       <motion.div 
-                          variants={rippleVariants}
-                          className="absolute inset-0 rounded-full bg-amber-500/30"
-                       />
+                       <motion.div variants={rippleVariants} className="absolute inset-0 rounded-full bg-amber-500/30" />
                        {/* Base Circle */}
                        <div className="absolute inset-0 rounded-full bg-amber-500/10 border border-amber-500/20 group-hover:border-amber-500 transition-colors"></div>
-                       
                        {/* Icon */}
                        <motion.div variants={iconShakeVariants} className="text-amber-500 relative z-10">
                           {step.icon}
