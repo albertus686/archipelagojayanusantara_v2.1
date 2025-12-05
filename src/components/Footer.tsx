@@ -71,7 +71,7 @@ const Footer = () => {
             </div>
             
             <p className="text-primary-100/80 text-sm leading-relaxed max-w-md">
-              Mitra terpercaya sourcing komoditas Indonesia. Menghadirkan Kopi Sumatra Mandeling Grade 1 terbaik ke pasar global.
+              Your trusted partner for sourcing Indonesia's finest commodities. Delivering premium Grade 1 Sumatra Mandeling coffee to the global market.
             </p>
 
             {/* Social Links */}
@@ -105,26 +105,26 @@ const Footer = () => {
             <ul className="space-y-2 text-sm text-primary-100/80">
               <li>
                 <button onClick={() => scrollToSection('#hero')} className="hover:text-amber-500 transition-colors text-left">
-                  Beranda
+                  Home
                 </button>
               </li>
 
               <li>
                 <button onClick={() => scrollToSection('#about')} className="hover:text-amber-500 transition-colors text-left">
-                  Tentang Kami
+                  About Us
                 </button>
               </li>
 
               <li>
                 <button onClick={() => scrollToSection('#products')} className="hover:text-amber-500 transition-colors text-left">
-                  Produk Kami
+                  Our Product
                 </button>
               </li>
 
 
               <li>
                 <button onClick={() => scrollToSection('#contact')} className="hover:text-amber-500 transition-colors text-left">
-                  Hubungi Kami
+                  Contact Us
                 </button>
               </li>
             </ul>
@@ -133,7 +133,7 @@ const Footer = () => {
           {/* KOLOM 3: Kontak - Lebar 4/12 */}
           <div className="md:col-span-4">
             <h4 className="font-bold text-white text-sm mb-4 border-b border-white/20 pb-2 inline-block">
-              Kantor Pusat
+              Head Office
             </h4>
             <ul className="space-y-3 text-sm text-primary-100/80">
               <li className="flex items-start gap-3">

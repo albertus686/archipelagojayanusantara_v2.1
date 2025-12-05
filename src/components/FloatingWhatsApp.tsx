@@ -16,7 +16,7 @@ const FloatingWhatsApp = () => {
       
       {/* Label Chat (Warna Putih Teks Coklat) */}
       <div className="bg-white text-primary-900 px-4 py-2 rounded-lg shadow-lg text-xs font-bold mb-1 animate-bounce origin-bottom-right border border-amber-100">
-        Butuh Bantuan?
+        Need a Help? Chat us on WhatsApp!
       </div>
 
       {/* Tombol Utama (Warna TEMA: Amber/Emas) */}
