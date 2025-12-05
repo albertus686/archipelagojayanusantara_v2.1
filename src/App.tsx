@@ -6,6 +6,7 @@ import ProductShowcase from './components/ProductShowcase'
 import ClientSuccessStories from './components/ClientSuccessStories'
 import ContactSection from './components/ContactSection'
 import Footer from './components/Footer'
+import FounderQuote from './components/FounderQuote'
 // 1. IMPORT KOMPONEN WA
 import FloatingWhatsApp from './components/FloatingWhatsApp' 
 import './App.css'
@@ -19,7 +20,7 @@ function App() {
         <Hero />
         <AboutCompany />
         <ProductShowcase />
-        <ClientSuccessStories />
+        <FounderQuote />
         <ContactSection />
       </main>
       

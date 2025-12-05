@@ -1,244 +1,162 @@
-import React, { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Star, TrendingUp, Users, Quote, CheckCircle } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useRef } from 'react'
+import { Star, Quote, TrendingUp, MapPin } from 'lucide-react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
-const ClientSuccessStories = () => {
-  const [current, setCurrent] = useState(0)
-  const [direction, setDirection] = useState(0) // 1 = Kanan, -1 = Kiri
-  const [autoPlay, setAutoPlay] = useState(true)
+const SuccessStories = () => {
+  const containerRef = useRef(null)
 
-  const testimonials = [
+  // PARALLAX BACKGROUND
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+  
+  const yBg = useTransform(scrollYProgress, [0, 1], [50, -50])
+
+  // DATA CLIENT STORIES (Contoh: Taiwan, Eropa, Lokal)
+  const stories = [
     {
-      quote: "The Mandeling beans from Archipelago are the cleanest G1 we've sourced. Our customer feedback on the earthy notes has been phenomenal.",
-      author: "James Miller",
-      position: "Head Roaster",
-      company: "Seattle Brew Co.",
-      location: "USA",
-      results: [
-        { label: 'Defect Rate', value: '< 1%', icon: <Star size={18} /> },
-        { label: 'Moisture Stability', value: 'Excellent', icon: <CheckCircle size={18} /> },
-        { label: 'Shipping Time', value: 'On Schedule', icon: <TrendingUp size={18} /> }
-      ],
-      image: '/images/hero-bg.png', 
-      product: 'Mandeling G1',
+      name: "Chen Wei-Hao",
+      role: "Head Roaster, Taipei",
+      company: "Formosa Coffee Lab",
+      image: "https://randomuser.me/api/portraits/men/32.jpg", // Ganti foto asli nanti
+      flag: "🇹🇼",
+      quote: "The Giling Basah profile from Archipelago is distinctively clean. It became our best-selling single origin espresso within just two months.",
+      result: "Best Seller 2024",
       rating: 5
     },
     {
-      quote: "Sangat mudah bekerja sama dengan tim AJN. Dokumen ekspor lengkap dan kualitas biji kopi sangat konsisten di setiap kontainer.",
-      author: "Hanseung Park",
-      position: "Import Manager",
-      company: "K-Beans Trading",
-      location: "South Korea", 
-      results: [
-        { label: 'Repeat Orders', value: '12 Containers', icon: <TrendingUp size={18} /> },
-        { label: 'Quality Consistency', value: '99.5%', icon: <Star size={18} /> },
-        { label: 'Communication', value: '24/7 Support', icon: <Users size={18} /> }
-      ],
-      image: '/images/hero-bg.png',
-      product: 'Gayo Specialty',
+      name: "Sarah Jenkins",
+      role: "Sourcing Manager",
+      company: "Nordic Brews, Sweden",
+      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      flag: "🇸🇪",
+      quote: "Consistency is key for us. Archipelago delivers Grade 1 beans that match the sample perfectly every single shipment. Truly reliable.",
+      result: "Zero Defects",
+      rating: 5
+    },
+    {
+      name: "Budi Santoso",
+      role: "Owner",
+      company: "Kopi Senja, Jakarta",
+      image: "https://randomuser.me/api/portraits/men/86.jpg",
+      flag: "🇮🇩",
+      quote: "Support lokal rasa internasional. Beans Mandeling mereka punya body yang tebal tapi aftertaste-nya manis. Customer saya sangat suka.",
+      result: "Sales +40%",
       rating: 5
     }
   ]
 
-  // SETTINGAN ANIMASI TUMPUK (SLIDER)
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%', // Masuk dari luar layar
-      opacity: 0,
-      scale: 0.9,
-      zIndex: 0
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      zIndex: 1,
-      transition: { duration: 0.6, type: "spring", stiffness: 300, damping: 30 } // Efek pegas halus
-    },
-    exit: (direction: number) => ({
-      x: direction < 0 ? '100%' : '-100%', // Keluar ke arah berlawanan
-      opacity: 0,
-      scale: 0.9,
-      zIndex: 0,
-      transition: { duration: 0.6 }
-    })
+  // ANIMASI
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   }
 
-  // Auto Play
-  useEffect(() => {
-    if (autoPlay) {
-      const interval = setInterval(() => {
-        setDirection(1)
-        setCurrent((prev) => (prev + 1) % testimonials.length)
-      }, 8000) // Sedikit diperlama biar nyaman baca
-      return () => clearInterval(interval)
-    }
-  }, [autoPlay, testimonials.length])
-
-  // Navigasi
-  const paginate = (newDirection: number) => {
-    setDirection(newDirection)
-    if (newDirection === 1) {
-      setCurrent((prev) => (prev + 1) % testimonials.length)
-    } else {
-      setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-    }
-  }
-
-  const goToIndex = (index: number) => {
-    setDirection(index > current ? 1 : -1)
-    setCurrent(index)
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
   }
 
   return (
-    <section id="testimonials" className="py-10 md:py-16 bg-primary-900 text-white relative overflow-hidden">
+    <section ref={containerRef} id="testimonials" className="py-16 md:py-24 bg-primary-900 relative overflow-hidden text-white">
       
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none bg-[radial-gradient(white_1px,transparent_1px)] [background-size:20px_20px]"></div>
+      {/* BACKGROUND DECOR */}
+      {/* Blob samar */}
+      <motion.div style={{ y: yBg }} className="absolute top-[20%] left-[-10%] w-96 h-96 bg-amber-900/20 rounded-full blur-[120px] pointer-events-none" />
+      <motion.div className="absolute bottom-[10%] right-[-10%] w-80 h-80 bg-amber-600/10 rounded-full blur-[100px] pointer-events-none" />
+      
+      {/* Texture Peta Dunia (Opsional, pakai URL gambar peta transparan kalau ada) */}
+      <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg')] bg-no-repeat bg-center opacity-[0.03] bg-contain pointer-events-none mix-blend-overlay invert"></div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-5 md:px-6 max-w-screen-2xl relative z-10">
         
-        {/* HEADER dengan ANIMASI MASUK (Scroll Reveal) */}
+        {/* HEADER */}
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-10"
+          variants={fadeInUp}
+          className="text-center mb-16"
         >
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">
+          <span className="text-amber-500 font-bold tracking-[0.2em] text-xs md:text-sm uppercase mb-3 block">
             Client Success Stories
+          </span>
+          <h2 className="font-heading text-3xl md:text-5xl font-bold text-white mb-6">
+            Trusted by <span className="text-amber-500">Global Partners</span>
           </h2>
-          <p className="text-primary-200 text-lg max-w-2xl mx-auto">
-            Kepercayaan dari Roaster dan Importir Global adalah bukti komitmen kualitas kami.
+          <p className="text-primary-100/70 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
+            See how our premium beans help roasters and distributors grow their business worldwide.
           </p>
         </motion.div>
 
-        {/* CONTAINER UTAMA (Fit Page) */}
+        {/* CARDS GRID */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-screen-xl mx-auto relative px-12 md:px-20"
+          className="grid md:grid-cols-3 gap-6 md:gap-8"
         >
-          
-          {/* TOMBOL KIRI (Luar) */}
-          <button 
-            onClick={() => paginate(-1)} 
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 text-white border border-white/20 p-3 rounded-full hover:bg-amber-600 hover:border-amber-600 transition-all duration-300 hidden md:flex hover:scale-110 shadow-lg backdrop-blur-sm"
-          >
-            <ChevronLeft size={28} />
-          </button>
+          {stories.map((story, index) => (
+            <motion.div 
+              key={index}
+              variants={fadeInUp}
+              whileHover={{ y: -10 }}
+              className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-2xl relative group hover:border-amber-500/30 transition-all duration-300 flex flex-col h-full"
+            >
+              {/* Icon Kutip Besar di Belakang */}
+              <Quote className="absolute top-6 right-6 text-white/5 w-16 h-16 group-hover:text-amber-500/10 transition-colors duration-500 transform rotate-12" />
 
-          {/* AREA KARTU (Fixed Height biar stabil saat animasi) */}
-          <div 
-            className="relative h-[500px] w-full"
-            onMouseEnter={() => setAutoPlay(false)}
-            onMouseLeave={() => setAutoPlay(true)}
-          >
-            {/* ANIMATE PRESENCE: Kunci animasi tumpuk */}
-            <AnimatePresence initial={false} custom={direction}>
-              
-              <motion.div
-                key={current}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black group"
-              >
-                {/* Background Image (Zoom saat Hover) */}
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ backgroundImage: `url('${testimonials[current].image}')` }}
-                ></div>
-                
-                {/* Overlay Gelap */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-black/40 transition-opacity duration-500"></div>
+              {/* Rating Stars */}
+              <div className="flex gap-1 mb-4 text-amber-500">
+                {[...Array(story.rating)].map((_, i) => (
+                  <Star key={i} size={16} fill="currentColor" />
+                ))}
+              </div>
 
-                {/* Konten Dalam Kartu */}
-                <div className="relative z-10 w-full h-full p-8 md:p-14 flex items-center">
-                  <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
-                    
-                    {/* Kiri: Teks */}
-                    <div className="transform transition-transform duration-500 group-hover:translate-x-2">
-                      <div className="flex items-center gap-1 mb-6">
-                        {[...Array(testimonials[current].rating)].map((_, i) => (
-                          <Star key={i} className="text-amber-400 fill-current" size={20} />
-                        ))}
-                      </div>
-                      
-                      <Quote className="text-amber-600 mb-6 opacity-80" size={56} />
-                      
-                      <blockquote className="text-2xl md:text-3xl font-heading font-medium leading-snug mb-8 text-primary-50">
-                        "{testimonials[current].quote}"
-                      </blockquote>
-                      
-                      <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-amber-600 rounded-full flex items-center justify-center font-bold text-xl shadow-lg border-2 border-white/20">
-                          {testimonials[current].author.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-bold text-lg text-white">{testimonials[current].author}</p>
-                          <p className="text-amber-400 text-sm">{testimonials[current].position}, {testimonials[current].company}</p>
-                        </div>
-                      </div>
+              {/* Quote Content */}
+              <p className="text-primary-100/90 text-sm md:text-base italic leading-relaxed mb-6 flex-grow relative z-10">
+                "{story.quote}"
+              </p>
+
+              {/* Result Badge (Success Metric) */}
+              <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full self-start mb-6">
+                 <TrendingUp size={14} className="text-amber-500" />
+                 <span className="text-amber-500 text-xs font-bold uppercase tracking-wide">{story.result}</span>
+              </div>
+
+              {/* Separator */}
+              <div className="h-px w-full bg-white/10 mb-4 group-hover:bg-amber-500/30 transition-colors"></div>
+
+              {/* Profile */}
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                    {/* Foto Profil Bulat */}
+                    <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20 group-hover:border-amber-500 transition-colors">
+                        <img src={story.image} alt={story.name} className="w-full h-full object-cover" />
                     </div>
-
-                    {/* Kanan: Metrics (Efek Glass + Hover Lift) */}
-                    <div className="hidden lg:block bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-inner transform transition-all duration-500 group-hover:-translate-y-2 group-hover:bg-white/10">
-                      <h4 className="font-bold text-sm mb-6 text-center text-amber-200 tracking-widest uppercase border-b border-white/10 pb-4">
-                        Performance Metrics
-                      </h4>
-                      <div className="space-y-4">
-                        {testimonials[current].results.map((result, index) => (
-                          <div key={index} className="flex items-center gap-4 p-4 bg-black/30 rounded-xl border border-white/5 hover:bg-amber-900/40 transition-colors">
-                            <div className="text-amber-400 bg-amber-900/30 p-2 rounded-lg">
-                              {result.icon}
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-xs uppercase text-primary-300 font-semibold tracking-wide mb-1">{result.label}</p>
-                              <p className="text-xl font-bold text-white">{result.value}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                  </div>
+                    {/* Bendera Negara */}
+                    <span className="absolute -bottom-1 -right-1 text-sm bg-primary-900 rounded-full p-0.5 border border-white/10 shadow-sm">
+                        {story.flag}
+                    </span>
                 </div>
-              </motion.div>
+                <div>
+                    <h4 className="text-white font-bold text-sm md:text-base group-hover:text-amber-400 transition-colors">{story.name}</h4>
+                    <div className="flex items-center gap-1.5 text-primary-300/60 text-xs">
+                        <MapPin size={12} />
+                        <span>{story.company}</span>
+                    </div>
+                </div>
+              </div>
 
-            </AnimatePresence>
-          </div>
-
-          {/* TOMBOL KANAN (Luar) */}
-          <button 
-            onClick={() => paginate(1)} 
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 text-white border border-white/20 p-3 rounded-full hover:bg-amber-600 hover:border-amber-600 transition-all duration-300 hidden md:flex hover:scale-110 shadow-lg backdrop-blur-sm"
-          >
-            <ChevronRight size={28} />
-          </button>
-
-          {/* Indikator Dots */}
-          <div className="flex justify-center gap-3 mt-6">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === current ? 'bg-amber-500 w-8' : 'bg-white/30 hover:bg-white/50'
-                }`}
-              />
-            ))}
-          </div>
-
+            </motion.div>
+          ))}
         </motion.div>
+
       </div>
     </section>
   )
 }
 
-export default ClientSuccessStories
+export default SuccessStories
