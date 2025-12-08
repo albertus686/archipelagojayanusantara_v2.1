@@ -100,7 +100,7 @@ const Footer = () => {
           {/* KOLOM 2: Menu - Lebar 3/12 */}
           <div className="md:col-span-3 md:pl-4">
             <h4 className="font-bold text-white text-sm mb-4 border-b border-white/20 pb-2 inline-block">
-              Akses Cepat
+              Quick Access
             </h4>
             <ul className="space-y-2 text-sm text-primary-100/80">
               <li>

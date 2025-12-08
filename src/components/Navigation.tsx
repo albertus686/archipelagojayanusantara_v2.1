@@ -17,7 +17,7 @@ const Navigation = () => {
     { label: 'Home', href: '#hero' },
     { label: 'About Us', href: '#about' },
     { label: 'Product', href: '#products' },
-    { label: 'Testimonial', href: '#testimonials' },
+    { label: 'Founder Quote', href: '#quote' },
   ]
 
   const scrollToSection = (href: string) => {
