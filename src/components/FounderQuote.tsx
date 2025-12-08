@@ -44,7 +44,7 @@ const FounderQuote = () => {
   }
 
   return (
-    <section ref={containerRef} className="py-24 md:py-32 bg-primary-900 relative overflow-hidden flex items-center justify-center min-h-[60vh]">
+    <section ref={containerRef} id="founder" className="py-24 md:py-32 bg-primary-900 relative overflow-hidden flex items-center justify-center min-h-[60vh]">
       
       {/* --- BACKGROUND ELEMENTS (DEKORASI) --- */}
       

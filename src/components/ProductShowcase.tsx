@@ -173,7 +173,7 @@ const ProductShowcase = () => {
             {/* TOMBOL FIX: Menggunakan 'w-auto' dan 'mx-auto' agar tidak panjang di HP */}
             <motion.div variants={fadeInUp} className="pt-2 md:pt-4">
               <a 
-                href="https://wa.me/6281234567890" // Ganti No WA
+                href="https://wa.me/6285700800872" // Ganti No WA
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex w-auto mx-auto lg:mx-0 bg-amber-600 text-white py-3 md:py-4 px-8 md:px-10 rounded-xl font-bold text-sm md:text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/40 items-center justify-center gap-2 md:gap-3 group active:scale-95"
