@@ -4,7 +4,7 @@ import { MessageCircle } from 'lucide-react'
 const FloatingWhatsApp = () => {
   // GANTI NOMOR WA DISINI
   const phoneNumber = '6285700800872' 
-  const message = "Hello I'm From Thailand, I Cannot Speak Indo"
+  const message = "Hei Archipelago Jaya Nusantara, I need some help!"
 
   const handleClick = () => {
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
