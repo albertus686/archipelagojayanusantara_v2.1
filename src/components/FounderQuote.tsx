@@ -122,7 +122,7 @@ const FounderQuote = () => {
             <div className="absolute top-1/2 right-0 translate-x-1/2 w-2 h-2 bg-amber-500 rounded-full opacity-50 group-hover:opacity-100 transition-opacity"></div>
 
             <h3 className="text-xl md:text-2xl font-bold text-white tracking-wide mb-1 group-hover:text-amber-100 transition-colors">
-              Nathan Lusandri Widjaja
+              Julius Anrico
             </h3>
             
             <p className="text-amber-500 text-xs md:text-sm uppercase tracking-[0.2em] font-medium opacity-80 group-hover:opacity-100 transition-opacity">

@@ -3,7 +3,7 @@ import { MessageCircle } from 'lucide-react'
 
 const FloatingWhatsApp = () => {
   // GANTI NOMOR WA DISINI
-  const phoneNumber = '6285700800872' 
+  const phoneNumber = '6281315794466' 
   const message = "Hei Archipelago Jaya Nusantara, I need some help!"
 
   const handleClick = () => {
